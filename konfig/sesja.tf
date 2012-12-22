@@ -147,9 +147,6 @@
     /unset __temp2%; \
     /unset _ile_s
 
-/def create_killers_array = \
-
-
 /def makro2 = \
     /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1}) %; \
     /let __nazwa2=%{__temp2}                    %; \
