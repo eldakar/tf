@@ -1,0 +1,38 @@
+1. Sciagamy normalnie zrodla tf'a (wersja 5 beta 8)
+2. Rozpakowujemy je gdzies
+3. Korzystajac z pliku w tfsql/sqlite-patch.diff patchujemy zrodla tf'a zeby dodac podstawowe komendy SQLite
+4. Teraz tak... jezeli chcemy skompilowac tf'a z uzyciem takim, wtedy podczas wyciagania danych z bazy danych
+   nasze lokalne zmienne przybiora postac %D0 %D1 %D2 itp. Wiecej szczegolow na temat takiego wyciagania
+   mozna przeczytac tu: 
+   
+   http://sourceforge.net/tracker/?func=detail&aid=1746378&group_id=186112&atid=915975
+   
+   Jednak mi to nie odpowiadalo dlatego lekko zmienilem dzialanie wyciagania danych z bazy w ten sposob
+   zeby dane mialy nazwe wyciaganej kolumny, np %id, %nazwa, %potworek_id
+   
+   Jezeli chcesz zeby dane wyciagaly sie w postaci %D0 %D1 itp to przejdz do pkt 6. Jezeli natomiast
+   chcesz dane z nazwami kolumn, przejdz do pkt 5.
+   
+5. Podmieniamy plik tfsql/sqlite.c do naszego wypakowanego i spatchowanego zrodla tf'a do katalogu
+   tf-50b8/src/
+6. ./configure
+7. Jezeli configure wypluje bledy, staramy sie je naprawic. Prawdopodobnie bedzie chcial naglowkow 
+   aplikacji i biblioteki sqlite3, w zaleznosci od systemu instaluje sie je inaczej. Np na debianie
+   wystarczy apt-get install sqlite3-dev ;) 
+8. Jezeli wszystko poprawnie skonfiguruje to musimy wyedytowac plik Makefile znajdujacy sie 
+   w tf-50b8/src/Makefile
+   
+   Na samym poczatku pliku mamy ladna konfiguracje utworzona przez naszego konfiguratora
+   W okolicach linii 46 powinna byc linijka LIBS
+   U mnie wyglada ona tak:
+   
+   LIBS = -lz -lm
+   
+   Musimy do tej linijki dodac jeszcze informacje, zeby kompilator linkowal nam nasza biblioteke systemowa
+   sqlite3, czyli dodajemy na koncu LIBS...
+   
+   LIBS = -lz -lm -lsqlite3
+   
+   Po czym wykonujemy make.
+   Jak sie skompiluje bezblednie, wykonujemy make install i cieszymy sie tf'em z obsluga sqlite3 :)
+   

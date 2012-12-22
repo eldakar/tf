@@ -1,0 +1,47 @@
+/test addworld("Arka", "lp", "arkadia.rpg.pl", "23")
+/test addworld("Nightal", "lp", "nightal.info", "2300")
+
+
+; Ustawionka
+
+;;;;;;;;;;;;;;;;;; TUTAJ USTAWIC SWOJA PODSTAWOWA SCIEZKE!!!!!!!!!!!!!!!!!!!!!!!!
+/cd /Users/rind/projects/rindek/tf/konfig
+
+/eval /set TFDIR=$(/pwd)
+/eval /set DBDIR=%{TFDIR}/../database
+/set isize=4
+/set wrapspace=0
+/eval /set wrapsize=$[columns()]
+/set warn_curly_re=off
+/set max_recur=300
+/set max_iter=10000
+/set histsize=5000
+/histsize -g 7000
+/histsize -i 3000
+/histsize -l 3000
+
+; Pare niezbednych standartowych bibliotek
+/require alias.tf
+/require at.tf
+/require filexfer.tf
+/require kbbind.tf
+; kbbind.tf automatycznie laduje kbfunc.tf i complete.tf
+/require map.tf
+/require relog.tf
+; relog.tf automatycznie laduje textutil.tf, a
+; textutil.tf automatycznie laduje lisp.tf
+/require speedwalk.tf
+
+; Pare takich drobnostek
+;/set kecho=on
+/eval /set kprefix=$[decode_attr("@{Cgreen}==> ")]
+
+/set log_time_format=[%H:%M:%S:%.]
+
+;; jezeli chcemy korzystac z db, nalezy odkomentowac linijki ponizej
+;/load db.tf
+
+/load login.tf
+
+; No to odpalamy caly konfig :)
+/repeat -1 1 /load start.tf

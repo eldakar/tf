@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<!-- Syntax do tf'a pod program 'kate' -->
+<!-- Zaczete: 09/11/2004 (9 miesiecy przerwy :P) -->
+<!--   Autor: Jacek Jakubik            -->
+
+<!-- Highlighting syntax of Tiny Fugue for 'kate'-->
+<!-- Started: 09/11/2004 (9 months of break :P)  -->
+<!--   Author: Jacek Jakubik                     -->
+
+<!-- Plik nalezy umiescic w katalogu: -->
+<!-- /usr/share/apps/katepart/syntax/ -->
+
+<language name="TF" version="1.0beta" kateversion="2.1" section="Scripts" extensions="*.tf" author="Jacek Jakubik (rind@tlen.pl)" priority="5">
+<highlighting>
+    <list name="keywords">
+        <item>abs</item>
+        <item>acos</item>
+        <item>addworld </item>
+        <item>ascii</item>
+        <item>asin</item>
+        <item>acos</item>
+        <item>atan</item>
+        <item>atan</item>
+        <item>char</item>
+        <item>columns</item>
+        <item>cos</item>
+        <item>decode_attr</item>
+        <item>decode_ansi</item>
+        <item>echo</item>
+        <item>encode_attr</item>
+        <item>escape</item>
+        <item>exp</item>
+        <item>fg_world</item>
+        <item>filename</item>
+        <item>ftime</item>
+        <item>fwrite</item>
+        <item>getopts</item>
+        <item>getpid</item>
+        <item>idle</item>
+        <item>is_connected</item>
+        <item>is_open</item>
+        <item>kbdel</item>
+        <item>kbgoto</item>
+        <item>kbhead</item>
+        <item>kblen</item>
+        <item>kbmatch</item>
+        <item>kbpoint</item>
+        <item>kbtail</item>
+        <item>kbwordleft</item>
+        <item>kbwordright</item>
+        <item>keycode</item>
+        <item>lines</item>
+        <item>ln</item>
+        <item>log</item>
+        <item>log10</item>
+        <item>mod</item>
+        <item>morescroll</item>
+        <item>moresize</item>
+        <item>nactive</item>
+        <item>nlog</item>
+        <item>nmail</item>
+        <item>nread</item>
+        <item>pad</item>
+        <item>pow</item>
+        <item>rand</item>
+        <item>read</item>
+        <item>regmatch</item>
+        <item>replace</item>
+        <item>send</item>
+        <item>sin</item>
+        <item>sidle</item>
+        <item>strcat</item>
+        <item>strchr</item>
+        <item>strcmp</item>
+        <item>strlen</item>
+        <item>strncmp</item>
+        <item>strrchr</item>
+        <item>strrep</item>
+        <item>strstr</item>
+        <item>strip_attr</item>
+        <item>substr</item>
+        <item>substitute</item>
+        <item>sqrt</item>
+        <item>systype</item>
+        <item>tan</item>
+        <item>textdecode</item>
+        <item>textencode</item>
+        <item>time</item>
+        <item>tfclose</item>
+        <item>tfflush</item>
+        <item>tfopen</item>
+        <item>tfread</item>
+        <item>tfwrite</item>
+        <item>toupper</item>
+        <item>tolower</item>
+        <item>trunc</item>
+        <item>winlines</item>
+        <item>world_info</item>
+<!-- Here are added new functions -->
+<!-- Tutaj dodawaj nowe funkcje   -->
+    <item> null </item>
+    <item> NULL </item>
+    <item> strcmpattr </item>
+    <item> encode_ansi </item>
+    <item> morepaused </item>
+    <item> cputime </item>
+    <item> eval </item>
+    <item> mktime </item>
+    <item> test </item>
+    <item> status_fields </item>
+    </list>
+
+    <contexts>
+        <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
+        <DetectSpaces />
+<!--            <RegExpr String=":!%&amp;()+,-/.*&lt;=&gt;?[]!~^&#59;" attribute="Attr" context="#stay"/> -->
+        <keyword attribute="Keyword"  context="#stay" String="keywords"/>
+            <RegExpr attribute="Comment"  String="^;.*$" context="#stay"/>
+        <RegExpr attribute="Separate" String="(%)*(;|\|)" context="#stay"/>
+        <RegExpr attribute="Percent"  String="(%)*" context="#stay"/>
+        <RegExpr attribute="String"   String="'([^']*)'" context="#stay"/>
+        <RegExpr attribute="String"   String="`([^`]*)`" context="#stay"/>
+        <RegExpr attribute="Kolor"    String="\{([^}]*)\}" context="#stay"/>
+        <RegExpr attribute="Maths"    String="(!|\+|-|\*|=|~|&lt;|&gt;|&amp;|\|)" context="#stay"/>
+            <RegExpr String="\/addworld" attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/require"  attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/load"     attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/def"      attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/while"    attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/do"       attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/done"     attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/if"       attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/then"     attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/elseif"   attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/else"     attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/endif"    attribute="Data Type" context="#stay"/>
+        <RegExpr String="\/test"      attribute="Data Type" context="#stay"/>
+        <RegExpr String="\/set"  attribute="Data Type" context="#stay"/>
+        <RegExpr String="\/let" attribute="Data Type" context="#stay"/>
+            <RegExpr String="\/([^ ]*)"   attribute="My Data"   context="#stay"/>
+            <RegExpr String="\\ ( )*"      attribute="Alert"     context="#stay"/>
+        <RegExpr attribute="Data Type" String="(#|@|(\$)*)" context="#stay"/>
+        <RegExpr attribute="Nawiasy"   String="(\(|\)|\[|\]|\{|\})" context="#stay"/>
+            <Float attribute="Float" context="#stay">
+                <AnyChar String="fF" attribute="Float" context="#stay"/>
+            </Float>
+            <Int attribute="Decimal" context="#stay"/>
+            <DetectChar attribute="String" context="String" char="&quot;"/>
+<!--        <DetectChar attribute="String" context="String" char="'"/>
+        <DetectChar attribute="String" context="String" char="`"/>
+        <AnyChar attribute="Symbol" context="#stay" String=":!%&amp;()+,-/.*&lt;=&gt;?[]!~^&#59;"/> -->
+        </context>
+        <context attribute="String" lineEndContext="#pop" name="String">
+            <LineContinue attribute="String" context="#stay"/>
+            <HlCStringChar attriubute="String Char" context="#stay"/>
+            <DetectChar attribute="String" context="#pop" char="&quot;'`"/>
+        </context>
+    </contexts>
+
+    <itemDatas>
+        <itemData name="Normal Text"   defStyleNum="dsNormal"/>
+        <itemData name="Keyword"      defStyleNum="dsKeyword"/>
+        <itemData name="Data Type"     defStyleNum="dsDataType"/>
+        <itemData name="Comment"       defStyleNum="dsComment"/>
+        <itemData name="My Data"       defStyleNum="dsNormal" bold="1" color="#007b82" />
+        <itemData name="Alert"         defStyleNum="dsNormal" bold="1" color="white" backgroundColor="red" />
+        <itemData name="Maths"          color="#8a8a8a" />
+        <itemData name="Decimal"       defStyleNum="dsDecVal"/>
+        <itemData name="Float"         defStyleNum="dsFloat"/>
+        <itemData name="Attr"          defStyleNum="dsNormal" color="#797e7f" />
+        <itemData name="String"        defStyleNum="dsString"/>
+        <itemData name="String Char"   defStyleNum="dsChar"/>
+    <itemData name="Symbol"        defStyleNum="dsNormal"/>
+    <itemData name="Separate"   color="#de00ff" />
+    <itemData name="Percent"    color="#0000ff" />
+    <itemData name="Nawiasy"    color="#005e88" />
+    <itemData name="Kolor"      color="#00aa00" />
+    </itemDatas>
+</highlighting>
+
+<general>
+    <keywords casesensitive="1" />
+<!--    weakDeliminator="-+*?!&lt;&gt;=/:#\~(){}[]$%@|"/> -->
+</general>
+</language>

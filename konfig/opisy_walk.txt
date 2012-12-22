@@ -1,0 +1,39 @@
+// -------------- bron paruje -----------------
+// impale
+Wyprowadzasz szybkie pchniecie [czym] w [kogo], lecz [zaimek] zbija je z linii ataku [czym].
+[Kto] wyprowadza szybkie pchniecie [czym] w ciebie, lecz tobie udaje sie zbic je z linii ataku [czym].
+
+// bludgeon
+Wykonujesz zamach [czym] mierzac w [kogo], lecz [zaimek] paruje go [czym].
+[Kto] wykonuje zamach [czym] mierzac w ciebie, lecz tobie udaje sie go sparowac [czym].
+
+// slash
+Wykonujesz zamaszyste ciecie [czym] mierzac w [kogo], lecz [zaimek] zbija je z linii ataku [czym].
+[Kto] wykonuje zamaszyste ciebie [czym] mierzac w ciebie, lecz tobie udaje sie je zbic z linii ataku [czym].
+
+
+//------------ oslona tarcza
+// impale
+Wyprowadzasz szybkie pchniecie [czym] w [kogo], lecz [zaimek] oslania sie [czym].
+[Kto] wyprowadza szybkie pchniecie [czym] w ciebie, lecz tobie udaje sie oslonic [czym].
+
+// bludgeon
+Robisz zamach [czym] mierzac w [kogo], lecz [zaimek] oslania sie [czym].
+[Kto] wykonuje zamach [czym] mierzac w ciebie, lecz tobie udaje sie oslonic [czym].
+
+// slash
+Wykonujesz zamaszyste ciecie [czym] mierzac w [kogo], lecz [zaimek] oslania sie [czym].
+[Kto] wykonuje zamaszyste ciecie [czym] mierzac w ciebie, lecz udaje ci sie oslonic [czym].
+
+
+//--------------- unikamy ciosu
+Probujesz trafic [kogo] [czym], lecz [zaimek] uskakuje przed twoim ciosem.
+[Kto] probuje cie trafic [czym], lecz tobie udaje sie uniknac tego ciosu.
+
+// ---------------- nie trafiamy w ogole w zaden sposob
+Nie udaje ci sie trafic [kogo] [czym].
+[Komu] nie udaje sie trafic ciebie [czym].
+
+// ------------------ zbroja paruje
+Trafiasz [kogo] [czym] w [co], lecz caly impet uderzenia zostaje wyparowany przez [zbroje].
+[Kto] trafia cie [czym] w [co], lecz caly impet uderzenia zostaje wyparowany przez [zbroje].

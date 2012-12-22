@@ -1,0 +1,18 @@
+;; Plik z danymi sprzetu, utworzony automatycznie, nie zmieniac!
+/ustaw_bron_1 ciezki obureczny miecz
+/ustaw_bron_2 jednoreczna kaplanska wekiera
+
+/ustaw_pojemnik_bron_1 skorzana zdobiona pochwa
+/ustaw_pojemnik_bron_2 lniany wygodny temblak
+
+/ustaw_komende_wkladania_bron_1 wloz
+/ustaw_komende_wkladania_bron_2 wloz
+
+/ustaw_komende_wyjmowania_bron_1 wyjmij
+/ustaw_komende_wyjmowania_bron_2 wyjmij
+
+/ustaw_pojemnik pojemny plecak
+
+/ustaw_tarcze mala spizowa tarcza
+/ustaw_pojemnik_tarcza pojemny plecak
+;; Koniec automatycznie generowanych danych

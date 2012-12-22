@@ -1,0 +1,523 @@
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/configure.in tf-50b8-working/configure.in
+--- tf-50b8/configure.in	2007-01-13 23:12:35.000000000 +0000
++++ tf-50b8-working/configure.in	2007-04-09 15:52:11.000000000 +0100
+@@ -373,6 +373,128 @@
+ AC_SUBST(PCRE)
+ 
+ 
++
++AC_DEFUN([AX_LIB_SQLITE3],
++[
++    AC_ARG_WITH([sqlite3],
++        AC_HELP_STRING(
++            [--with-sqlite3=@<:@ARG@:>@],
++            [use SQLite 3 library @<:@default=yes@:>@, optionally specify the prefix for sqlite3 library]
++        ),
++        [
++        if test "$withval" = "no"; then
++            WANT_SQLITE3="no"
++        elif test "$withval" = "yes"; then
++            WANT_SQLITE3="yes"
++            ac_sqlite3_path=""
++        else
++            WANT_SQLITE3="yes"
++            ac_sqlite3_path="$withval"
++        fi
++        ],
++        [WANT_SQLITE3="yes"]
++    )
++
++    SQLITE3_CFLAGS=""
++    SQLITE3_LDFLAGS=""
++    SQLITE3_VERSION=""
++
++    if test "x$WANT_SQLITE3" = "xyes"; then
++
++        ac_sqlite3_header="sqlite3.h"
++
++        sqlite3_version_req=ifelse([$1], [], [3.0.0], [$1])
++        sqlite3_version_req_shorten=`expr $sqlite3_version_req : '\([[0-9]]*\.[[0-9]]*\)'`
++        sqlite3_version_req_major=`expr $sqlite3_version_req : '\([[0-9]]*\)'`
++        sqlite3_version_req_minor=`expr $sqlite3_version_req : '[[0-9]]*\.\([[0-9]]*\)'`
++        sqlite3_version_req_micro=`expr $sqlite3_version_req : '[[0-9]]*\.[[0-9]]*\.\([[0-9]]*\)'`
++        if test "x$sqlite3_version_req_micro" = "x" ; then
++            sqlite3_version_req_micro="0"
++        fi
++
++        sqlite3_version_req_number=`expr $sqlite3_version_req_major \* 1000000 \
++                                   \+ $sqlite3_version_req_minor \* 1000 \
++                                   \+ $sqlite3_version_req_micro`
++
++        AC_MSG_CHECKING([for SQLite3 library >= $sqlite3_version_req])
++
++        if test "$ac_sqlite3_path" != ""; then
++            ac_sqlite3_ldflags="-L$ac_sqlite3_path/lib"
++            ac_sqlite3_cppflags="-I$ac_sqlite3_path/include"
++        else
++            for ac_sqlite3_path_tmp in /usr /usr/local /opt ; do
++                if test -f "$ac_sqlite3_path_tmp/include/$ac_sqlite3_header" \
++                    && test -r "$ac_sqlite3_path_tmp/include/$ac_sqlite3_header"; then
++                    ac_sqlite3_path=$ac_sqlite3_path_tmp
++                    ac_sqlite3_ldflags="-I$ac_sqlite3_path_tmp/include"
++                    ac_sqlite3_cppflags="-L$ac_sqlite3_path_tmp/lib"
++                    break;
++                fi
++            done
++        fi
++
++        ac_sqlite3_ldflags="$ac_sqlite3_ldflags -lsqlite3"
++
++        saved_CPPFLAGS="$CPPFLAGS"
++        CPPFLAGS="$CPPFLAGS $ac_sqlite3_cppflags"
++
++        AC_LANG_PUSH(C++)
++        AC_COMPILE_IFELSE(
++            [
++            AC_LANG_PROGRAM([[@%:@include <sqlite3.h>]],
++                [[
++#if (SQLITE_VERSION_NUMBER >= $sqlite3_version_req_number)
++// Everything is okay
++#else
++#  error SQLite version is too old
++#endif
++                ]]
++            )
++            ],
++            [
++            AC_MSG_RESULT([yes])
++            success="yes"
++            ],
++            [
++            AC_MSG_RESULT([not found])
++            succees="no"
++            ]
++        )
++        AC_LANG_POP([C++])
++
++        CPPFLAGS="$saved_CPPFLAGS"
++
++        if test "$success" = "yes"; then
++
++            SQLITE3_CFLAGS="$ac_sqlite3_cppflags"
++            SQLITE3_LDFLAGS="$ac_sqlite3_ldflags"
++
++            ac_sqlite3_header_path="$ac_sqlite3_path/include/$ac_sqlite3_header"
++
++            dnl Retrieve SQLite release version
++            if test "x$ac_sqlite3_header_path" != "x"; then
++                ac_sqlite3_version=`cat $ac_sqlite3_header_path \
++                    | grep '#define.*SQLITE_VERSION.*\"' | sed -e 's/.* "//' \
++                        | sed -e 's/"//'`
++                if test $ac_sqlite3_version != ""; then
++                    SQLITE3_VERSION=$ac_sqlite3_version
++                else
++                    AC_MSG_WARN([Can not find SQLITE_VERSION macro in sqlite3.h header to retrieve SQLite version!])
++                fi
++            fi
++
++dnl         Added by MH
++            CFLAGS="$CFLAGS $SQLITE3_CFLAGS"
++            LDFLAGS="$LDFLAGS $SQLITE3_LDFLAGS"
++dnl            AC_SUBST(SQLITE3_CFLAGS)
++dnl            AC_SUBST(SQLITE3_LDFLAGS)
++            AC_SUBST(SQLITE3_VERSION)
++            AC_DEFINE(HAVE_SQLITE3)
++        fi
++    fi
++])
++AX_LIB_SQLITE3()
++
+ dnl ########### headers ############
+ 
+ AC_HEADER_STDC
+@@ -588,6 +710,8 @@
+     program_suffix="-${TFVER}"
+ fi
+ 
++
++
+ dnl The "right" way of using program_transform_name, program_prefix, and
+ dnl program_suffix expects you to use AC_ARG_PROGRAM here and do transformation
+ dnl in the Makefile, but we want the values now, so we do it ourselves.
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/expr.c tf-50b8-working/src/expr.c
+--- tf-50b8/src/expr.c	2007-01-13 23:12:39.000000000 +0000
++++ tf-50b8-working/src/expr.c	2007-04-09 15:50:34.000000000 +0100
+@@ -1533,6 +1533,38 @@
+             return newSstr(CS(Sstr));
+ 	  }
+ 
++#ifdef HAVE_SQLITE3
++        case FN_dbopen:
++            return newint(handle_dbopen_func(opdstd(1)));
++        
++        case FN_dbclose:
++            return newint(handle_dbclose_func(opdstd(1)));
++
++        case FN_dbfinalize:
++            return newint(handle_dbfinalize_func(opdstd(1)));
++
++        case FN_dbreset:
++            return newint(handle_dbreset_func(opdstd(1)));
++
++        case FN_dbstep:
++            return newint(handle_dbstep_func(opdstd(1)));
++
++        case FN_dbprepare:
++            return newint(handle_dbprepare_func(opdstd(2), opdstd(1)));
++
++        case FN_dbbind: {
++            int rc;
++            int i;
++            for (i=1; i<n; i++) {
++                rc = handle_dbbind_func(opdstd(n), n-i, opdstd(i));
++                if (rc != 0) {
++                    return newint(rc);
++                }
++            }
++            return newint(0);
++        }
++#endif /* HAVE_SQLITE3 */
++            
+         default:
+             eprintf("not supported");
+             return NULL;
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/funclist.h tf-50b8-working/src/funclist.h
+--- tf-50b8/src/funclist.h	2007-01-13 23:12:39.000000000 +0000
++++ tf-50b8-working/src/funclist.h	2007-04-09 15:49:46.000000000 +0100
+@@ -21,6 +21,15 @@
+ funccode(columns,	0,	0,  0),
+ funccode(cos,		1,	1,  1),
+ funccode(cputime,	0,	0,  0),
++#ifdef HAVE_SQLITE3
++funccode(dbbind,        0,      2,  (unsigned)-1),
++funccode(dbclose,       0,      1,  1),
++funccode(dbfinalize,    0,      1,  1),
++funccode(dbopen,        0,      1,  1),
++funccode(dbprepare,     0,      2,  2),
++funccode(dbreset,       0,      1,  1),
++funccode(dbstep,        0,      1,  1),
++#endif /* HAVE_SQLITE3 */
+ funccode(decode_ansi,	1,	1,  1),
+ funccode(decode_attr,	1,	1,  3),
+ funccode(echo,		0,	1,  4),
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/main.c tf-50b8-working/src/main.c
+--- tf-50b8/src/main.c	2007-01-13 23:12:39.000000000 +0000
++++ tf-50b8-working/src/main.c	2007-04-09 12:58:42.000000000 +0100
+@@ -155,6 +155,9 @@
+     init_output();			/* output.c   */
+     init_attrs();			/* attr.c     */
+     init_keyboard();			/* keyboard.c */
++#ifdef HAVE_SQLITE3
++    init_sqlite();                      /* sqlite.c   */
++#endif /* HAVE_SQLITE3 */
+ 
+     oputs(version);
+     oputs(copyright);
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/sqlite.c tf-50b8-working/src/sqlite.c
+--- tf-50b8/src/sqlite.c	1970-01-01 01:00:00.000000000 +0100
++++ tf-50b8-working/src/sqlite.c	2007-04-09 17:35:25.000000000 +0100
+@@ -0,0 +1,250 @@
++#include "tfconfig.h" /* autoconf stuff? */
++#ifdef HAVE_SQLITE3
++#include "port.h"
++#include "tf.h"
++#include "search.h"
++#include "malloc.h"
++#include "sqlite.h"
++#include "variable.h"
++
++#include <sqlite3.h>
++
++List dblist;
++List statementlist;
++int dblist_max_id=1;
++int statementlist_max_id=1;
++
++/* Called from main.c */
++void init_sqlite(void) {
++    init_list(&dblist);
++    init_list(&statementlist);
++}
++
++int add_db_to_list(sqlite3 *db) {
++    dbnode *node;
++    node = XMALLOC(sizeof(dbnode));
++    node->id=dblist_max_id++;
++    node->db=db;
++    node->node = inlist(node, &dblist, (&dblist)->tail);
++    return node->id;
++}
++
++int add_statement_to_list(sqlite3_stmt *stmt) {
++    statementnode *node;
++    node = XMALLOC(sizeof(statementnode));
++    node->id=statementlist_max_id++;
++    node->stmt=stmt;
++    node->node = inlist(node, &statementlist, (&statementlist)->tail);
++    return node->id;
++}
++
++ListEntry *find_db_from_handle(const char *handle) {
++    ListEntry *node;
++    int id;
++    id = atoi(handle);
++    for (node=(&dblist)->head; node; node=node->next) {
++        if(((dbnode*)node->datum)->id == id)
++            break;
++    }
++    return node;
++}
++
++ListEntry *find_statement_from_handle(const char *handle) {
++    ListEntry *node;
++    int id;
++    id = atoi(handle);
++    for (node=(&statementlist)->head; node; node=node->next) {
++        if(((statementnode*)node->datum)->id == id)
++            break;
++    }
++    return node;
++}
++
++static int callback(void *NotUsed, int argc, char **argv, char **azColName){
++  int i;
++  for(i=0; i<argc; i++){
++    eprintf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
++  }
++  eprintf("\n");
++  return 0;
++}
++
++
++int handle_dbopen_func(const char *filename) {
++    sqlite3 *db;
++    char *zErrMsg;
++    int rc;
++
++    rc = sqlite3_open(filename, &db);
++    if (rc) {
++        eprintf("Can't open database: %s", sqlite3_errmsg(db));
++        sqlite3_close(db);
++        return -1;
++    }
++    
++    rc = add_db_to_list(db);
++    return rc;
++}
++
++int handle_dbclose_func(const char *handle) {
++    ListEntry *node;
++    node = find_db_from_handle(handle);
++    if (node) {
++        sqlite3_close(((dbnode*)node->datum)->db);
++        free(node->datum);
++        unlist(node, &dblist);
++        return 0;
++    }
++    eprintf("%s: invalid handle.", handle);
++    return -1;
++}
++
++int handle_dbprepare_func(const char *dbhandle, const char *query) {
++    sqlite3_stmt *stmt;
++    ListEntry *node;
++    sqlite3 *db;
++    const char *pzTail;
++    int rc;
++
++    node = find_db_from_handle(dbhandle);
++    if (!node) {
++        eprintf("%s: invalid database handle.", dbhandle);
++        return -1;
++    }
++    db = ((dbnode*)node->datum)->db;
++    
++    rc = sqlite3_prepare(db, query, -1, &stmt, &pzTail);
++    if (rc != SQLITE_OK) {
++        eprintf("Can't prepare query: %s", sqlite3_errmsg(db));
++        return -2;
++    }
++    rc = add_statement_to_list(stmt);
++    return rc;
++}
++
++int handle_dbbind_func(const char *stmthandle, int col, const char *val) {
++    int rc;
++    ListEntry *node;
++    sqlite3_stmt *stmt;
++
++    node = find_statement_from_handle(stmthandle);
++    if (!node) {
++        eprintf("%s: invalid statement handle.", stmthandle);
++        return -1;
++    }
++    stmt = ((statementnode*)node->datum)->stmt;
++
++    rc = sqlite3_bind_text(stmt, col, val, -1, SQLITE_TRANSIENT);
++    switch (rc) {
++        case SQLITE_RANGE:
++            eprintf("Error: Too many paramaters to bind to prepared "
++                    "statement.");
++            return -2;
++        case SQLITE_MISUSE:
++            eprintf("Error: dbbind called incorrectly. "
++                    "Perhaps the prepared statement is no longer valid?");
++            return -3;
++        case SQLITE_NOMEM:
++            eprintf("Error: Malloc failed. Out of memory.");
++            return -4;
++        case SQLITE_OK:
++            return 0;
++        default:
++            eprintf("Error binding value: %s",
++                    sqlite3_errmsg(sqlite3_db_handle(stmt)));
++            return -255;
++    }
++}
++
++/* Returns -
++ * 0 - Row returned
++ * 1 - Done - row returned?
++ * 2 - Busy - no row returned, try again later?
++ * -1 - Invalid handle
++ * -2 - Misuse (E.g. called again after done returned)
++ * -255 - Other error
++ */
++int handle_dbstep_func(const char *stmthandle) {
++    int rc;
++    int numcols;
++    int i;
++    ListEntry *node;
++    sqlite3_stmt *stmt;
++
++    node = find_statement_from_handle(stmthandle);
++    if (!node) {
++        eprintf("%s: invalid statement handle.", stmthandle);
++        return -1;
++    }
++    stmt = ((statementnode*)node->datum)->stmt;
++
++    rc = sqlite3_step(stmt);
++    switch (rc) {
++        case SQLITE_BUSY:
++            eprintf("Warning: Database busy. No rows returned");
++            return 2;
++        case SQLITE_DONE:
++            sqlite3_reset(stmt);
++            return 1;
++        case SQLITE_MISUSE:
++            eprintf("Error: dbstep called incorrectly "
++                    "(Perhaps all rows have already been returned?");
++            return -2;
++        case SQLITE_ROW: {
++            char varname[] = "D?";
++            numcols = sqlite3_data_count(stmt);
++            const unsigned char *value;
++            const unsigned char empty[] = "NULL\0";
++            conString *str;
++            for (i=0; i<numcols; i++) {
++                /* Variables from D0-D9, then DA-DZ */
++                if (i < 10) {
++                    varname[1] = i+48;
++                } else if (i < 36) {
++                    varname[1] = i+55;
++                } else {
++                    /* Only go up to DZ, then just stop retrieving columns */
++                    break;
++                }
++                value = sqlite3_column_text(stmt, i);
++                if (!value) value=empty;
++                str=CS(Stringnew((const char *)value, -1, 0));
++                setlocalstrvar(varname, str);
++            }
++            return 0;
++        }
++        case SQLITE_ERROR:
++        default:
++            eprintf("Error executing query: %s",
++                    sqlite3_errmsg(sqlite3_db_handle(stmt)));
++            return -255;
++    }
++}
++
++/* Finalize statement */
++int handle_dbfinalize_func(const char *stmthandle) {
++    ListEntry *node;
++    node = find_statement_from_handle(stmthandle);
++    if (node) {
++        sqlite3_finalize(((statementnode*)node->datum)->stmt);
++        free(node->datum);
++        unlist(node, &statementlist);
++        return 0;
++    }
++    eprintf("%s: invalid statment handle.", stmthandle);
++    return -1;
++}
++
++/* Reset statement - let's dbstep restart from the beginning */
++int handle_dbreset_func(const char *stmthandle) {
++    ListEntry *node;
++    node = find_statement_from_handle(stmthandle);
++    if (node) {
++        sqlite3_reset(((statementnode*)node->datum)->stmt);
++        return 0;
++    }
++    eprintf("%s: invalid statment handle.", stmthandle);
++    return -1;
++}
++
++#endif /* HAVE_SQLITE3 */
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/sqlite.h tf-50b8-working/src/sqlite.h
+--- tf-50b8/src/sqlite.h	1970-01-01 01:00:00.000000000 +0100
++++ tf-50b8-working/src/sqlite.h	2007-04-09 14:54:55.000000000 +0100
+@@ -0,0 +1,22 @@
++#ifdef HAVE_SQLITE3
++#include <sqlite3.h>
++
++typedef struct dbnode {
++    int id;
++    ListEntry *node;
++    sqlite3 *db;
++} dbnode;
++
++typedef struct statementnode {
++    int id;
++    ListEntry *node;
++    sqlite3_stmt *stmt;
++} statementnode;
++
++extern int handle_dbopen_func(const char *filename);
++extern int handle_dbclose_func(const char *handle);
++extern int handle_dbprepare_func(const char *dbhandle, const char *query);
++extern int handle_dbbind_func(const char *stmthandle, int col, const char *val);
++extern int handle_dbstep_func(const char *stmthandle);
++extern int handle_dbfinalize_func(const char *statementhandle);
++#endif /* HAVE_SQLITE3 */
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/tfconfig.h.in tf-50b8-working/src/tfconfig.h.in
+--- tf-50b8/src/tfconfig.h.in	2007-01-13 23:12:39.000000000 +0000
++++ tf-50b8-working/src/tfconfig.h.in	2007-04-09 14:03:22.000000000 +0100
+@@ -61,6 +61,7 @@
+ #define HAVE_SETLOCALE 0
+ #define HAVE_SETRLIMIT 0
+ #define HAVE_SIGACTION 0
++#define HAVE_SQLITE3 0
+ #define HAVE_SRAND 0
+ #define HAVE_SRANDOM 0
+ #define HAVE_STRCASECMP 0
+diff -xoutput.0 -xtraces.0 -xrequests -xconfigure -xMakefile -u -r -N tf-50b8/src/vars.mak tf-50b8-working/src/vars.mak
+--- tf-50b8/src/vars.mak	2007-01-13 23:12:39.000000000 +0000
++++ tf-50b8-working/src/vars.mak	2007-04-09 12:27:20.000000000 +0100
+@@ -20,10 +20,10 @@
+ 
+ SOURCE = attr.c command.c dstring.c expand.c expr.c help.c history.c \
+   keyboard.c macro.c main.c malloc.c output.c process.c search.c \
+-  signals.c socket.c tfio.c tty.c util.c variable.c world.c
++  signals.c socket.c sqlite.c tfio.c tty.c util.c variable.c world.c
+ 
+ OBJS = attr.$O command.$O dstring.$O expand.$O expr.$O help.$O history.$O \
+   keyboard.$O macro.$O main.$O malloc.$O output.$O pattern.$O process.$O \
+-  search.$O signals.$O socket.$O tfio.$O tty.$O util.$O variable.$O world.$O \
+-  $(OTHER_OBJS)
++  search.$O signals.$O socket.$O sqlite.$O tfio.$O tty.$O util.$O variable.$O \
++  world.$O $(OTHER_OBJS)
+ 

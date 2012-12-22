@@ -1,0 +1,14 @@
+Uzycie: /r [tekst]
+Trigger: nie
+
+Opis:
+Komenda wysle tell'a do wiza/gracza, ktory ostatnio do niego cos powiedzial.
+Imie gracza lub wiza jest przechwytywane przy otrzymaniu tella lub odpowiedzi
+
+Przyklad:
+Mithandir tells you: Czesc.
+> /r Czesc.
+You tell Mithandir: Czesc.
+Gracz odpowiada: Dziekuje za pomoc.
+> /r Prosze bardzo.
+You tell Gracz: Prosze bardzo.

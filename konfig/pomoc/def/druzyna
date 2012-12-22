@@ -1,0 +1,8 @@
+Uzycie: /druzyna
+Trigger: tak, przy dolaczaniu do druzyny
+
+Opis: 
+Wykonuje komende 'druzyna' oraz konfiguruje aktualna druzyne w jakiej znajduje
+sie gracz. Ustawia kolory, odmiany, itp.
+
+

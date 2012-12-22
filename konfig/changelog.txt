@@ -1,0 +1,80 @@
+; Plik changelogu
+; Nie zmieniac ;)
+# 07-06-2006
+| - Napisalem skrypt @{BCgreen}changeloga@{n}, od dzisiaj zmiany beda wypisane tutaj
+| - Zmiany w funkcji @{BCwhite}_check_go@{n}, input jest juz prawidlowy
+# 09-06-2006
+| - Napisalem skrypt @{BCgreen}wrogowie.tf@{n}, ktory zapisuje wrogow ;)
+# 15-06-2006
+| - Napisalem maly skrypt @{BCgreen}login.tf@{n}, w zaleznosci od gracza odpala odpowiedni conf
+# 19-06-2006
+| - @{BCwhite}wiz.tf@{n}, dopisalem maly def '/r', sluzy do odpowiadania na telle i odpowiedzi
+# 21-06-2006
+| - Dopisalem do @{BCwhite}wiz.tf@{n}, komende @{BCgreen}/wiz_sending@{n}
+# 22-06-2006
+| - @{BCwhite}tablice.tf@{n}, zoptymalizowalem sprawdzanie tablic, lib dziala znacznie szybciej
+| - @{BCwhite}odmiana.tf@{n}, dodana odmiana rzeczy niezywotnych, @{BCgreen}/odmien_n@{n}
+| - @{BCwhite}odmiana.tf@{n}, dodalem odmiane narzednik -> mianownik, @{BCgreen}/n_mia@{n}, enjoy
+# 26-06-2006
+| - @{BCwhite}kondycja.tf@{n}, dodalem komende @{BCgreen}/kondycja_toggle@{n}, rozne pokazywanie kondycji
+| - @{BCwhite}druzyna.tf@{n}, zmienilem bindowanie /druzyna i dolaczania, dodalem kolory imion w druzynie
+| - @{BCwhite}bindy.tf@{n}, zmienilem @{BCwhite}check_go@{n}, by gralo z lazikiem
+| - Napisalem @{BCgreen}lazik.tf@{n}, zeby dzialal poprawnie trzeba pobrac rowniez nowa wersje @{BCwhite}wyjscia.tf@{n}.
+# 29-06-2006
+| - Napisalem dzisiaj @{BCgreen}sprzet.tf@{n}, skrypt do obslugi skryptu, help w pliku na poczatku
+# 04-07-2006
+| - Do @{BCwhite}bindy.tf@{n}, dopisalem bindy na alt, ctrl i shift + alt do alfabetu. Nalezy jednak pamietac, ze niektore bindy sa juz podstawione i ich zmiana moze sie zle skonczyc. Skladania bindow: @{BCgreen}/bind_(alt|ctrl|shift_alt)_litera komenda
+# 16-09-2006
+| - Zmienilem nieco kondycje, teraz kazda osoba pokazana w kondycji wszystkich ma przypisany wlasny numer i mozna latwo obejrzec dana osobe wpisujac '/ob nr', lub prosciej - 'qq nr' oraz dodalem tez '/mow', dzialajacy w/w podanej zasady. '/mow nr text', np. '/mow 1 Zginiesz marnie.'. Calosc zostala dopisana do pliku @{BCwhite}kondycja.tf@{n}
+# 27-09-2006
+| - W nowym pliku @{BCgreen}simul_efuns.tf@{n}, znajdziecie kilka defow, ktorych zabraklo do wpisania w TFLIB. Glownie znajdziemy tam brakujace funkcje dotyczace manewrowaniem echa komend, prefixy oraz brakujace @{BCgreen}/secho@{n}
+# 16-10-2006
+| - Dodalem funkcje @{BCgreen}/zwroc_koncowki@{n} ktora przyjmuje argument mianownika slowa ktory znajduje sie w bazie slownika. Zwraca koncowki wszystkich przypadkow w ladnej formie do przyjecia podczas pisania regexpow. Uzycie: np. /zwroc_koncowki stol
+# 13-12-2006
+| - @{BCwhite}login.tf@{n} od dzisiaj laduje sie automatycznie zanim jakikolwiek inny skrypt sie zaladuje
+# 18-01-2007
+| - Przez dlugi czas nie bylo zadnych aktualizacji, jednak dzisiaj napisalem pare skryptow dla mortala, mozna je znalezc w @{BCgreen}mortal/noir@{n}
+# 27-01-2007
+| - Napisalem @{BCgreen}zapamietywanie.tf@{n}, skrypt ktory bedzie pamietal imie, short oraz tytul. Nie jest kompletny, ale dziala jak powinien.
+# 27-02-2007
+| - Drobnia zmiana w @{BCwhite}lazik.tf@{n}, gdy podajemy czas ruchu, trzeba podac zmienna typu @{BCred}float@{n}. Wyjatek stanowi liczba '0', wtedy lazik bedzie szedl bez delaya.
+| - Dodalem opcje -e do @{BCwhite}lazika@{n}, jesli bedzie podana przy komendzie /idz, wtedy bedzie sie wykonywala w kazdej lokacji
+# 28-02-2007
+| - Drobna zmiana, aczkolwiek widoczna w wyswietlaniu kondycji.
+# 29-03-2007
+| - Do pliku @{BCgreen}kondycja.tf@{n} dopisalem krotki def odpowiadajacy za zaslony. Uzycie: /zas 2 3, gdzie 2 odpowiada numerowi kondycji kogo zaslaniac, a 3 - przed kim
+| - Dzisiaj, 29 marca 2007 - wersja skryptow to: 0.1
+# 27-05-2007
+| - Dawno nie bylo zadnych aktualizacji. Dzisiaj poprawilem @{BCgreen}wyjscia.tf@{n}, od teraz pokazywany jest caly pattern wyjsc, a roza wiatrow oraz inne pokazywacze sa kolorwane w zaleznosci od tego czy jest noc, czy dzien (Imperium), gdy jest noc, napis jest ciemny, gdy dzien - jasny.
+# 15-09-2007
+| - Napisalem nowy skrypt @{BCgreen}ping.tf@{n} ktory pokazuje czas (w ms) od momentu wyslania komendy do MUD'a do momentu otrzymania kolejnego prompta (> ) informacja ta moze pokazac jak potezny mamy lag w danym momencie. Jesli liczba jest @{Cgreen}zielona@{n} - lag jest maly, jesli @{Cyellow}zolta@{n} - sredni, jesli @{Cred}czerwona@{n} - duza, jesli @{BCmagenta}fioletowa@{n} - bardzo duza.
+# 16-09-2007
+| - Zoptymalizowalem @{BCwhite}changelog@{n}, od teraz zdania w logu zmian sa odpowiednio ciete i dobrze ukazywane nawet przy niskiej szerokosci terminala
+| - Mala poprawka w @{BCwhite}ping.tf@{n} oraz dodanie komendy @{BCgreen}/reload@{n}, ktora przeladowuje wszystkie skrypty. Poleca sie jej uzywanie gdy nie jest sie podlaczonym do zadnego swiata, poniewaz niektore skrypty odpalaja sie tylko przy logowaniu
+| - Usuniecie plikow zaczetych i nieskonczonych skryptow, porzadki w katalogach
+# 22-09-2007
+| - Dodalem nowa komende: @{BCgreen}/odpalaj@{n} Sluzy ona do odpalania roznych programow systemowych w tle. Np. gdy chcemy odpalic jakas mp3 to wpisujemy sobie @{BCwhite}/odpalaj mpg123 /tmp/jakas.mp3@{n}.
+# 18-10-2007
+| - Dodalem podswietlenia zbroi, pokazywane sa zoltym kolorem. Niektore ubrania sa takze traktowane jako zbroje (np. kamizelka albo kurtka, czy czapka), to musi ulec zmianie, jednak nie mam pojecia jak to poprawic :)
+# 22-10-2007
+| - Zmienilem troche kolorowanie krzyczenia. Teraz jak my krzyczymy, to na czerwono. Jesli ktos krzyczy to jest to oddzielone linia i wyraznie zaznaczone.
+# 03-11-2007
+| - Usunalem skrypt ping, nie dawal nic praktycznego, a tylko przeszkadzal :)
+# 05-11-2007
+| - Napisalem licznik zabic. Stara komenda @{BCwhite}/tod@{n} pokazywala zabicia tylko w danej sesji (zabicia nasze, oraz kolegow / kolezanek), a teraz jest nowa komenda @{BCgreen}/zabici@{n}, ktora pokaze nam ile i czego zabilismy w calej karierze gracza :)
+| - Mala uwaga do w/w punktu - licznik zapisuje sie w katalogu mortal/imie_gracza/ w pliku licznik.d. W skryptach odpalajacych skrypty mortala nalezy wywolac funkcje @{BCwhite}/_init_licznik@{n} (ktora ustawi nam katalog w ktorym bedziemy zapisywac dane zabic) i @{BCwhite}/wczytaj_licznik@{n}, ktory odczyta nam dane z w/w pliku.
+# 10-01-2011
+| - Udalo mi sie skompilowac wersje tf'a z uzyciem bazy sqlite. W internecie jest patch ktory dodaje uzycie sql, jednak nieco go zmienilem zeby dzialal poprawnie na moje potrzeby. 
+| - @{BCgreen}W pliku jak_zainstalowac_tf_z_baza_sql znajduja sie informacje co nalezy zrobic, zeby nasza wersja dzialala z baza SQLite@{n}
+| - @{BCgreen}/pomoc@{n} w koncu dziala... dostepna pomoc do skryptow znajduje sie w katalogu @{BCwhite}pomoc/@{n}
+| - Dodalem nowy przykladowy skrypt z uzyciem bazy SQLite w pliku @{BCgreen}imiona_sql.tf@{n}
+# 29-01-2011
+| - Dodalem skrypt do szybkich bindow, zmienilem sciezke standardowa pliku sqlowego na katalog ze skryptami
+| - Skrypt do szybkich bindow nosi nazwe @{BCgreen}quick_binds_sql.tf@{n}
+| - Kazdy skrypt korzystajacy z sql'a postaram sie dodawac suffix _sql
+# 09-02-2011, @{BCwhite}v0.13@{n}
+| - Dodanie wersjonowania do changeloga na podstawie numeru rewizji z svn
+| - Skrypty sa udostepnione tu: http://code.google.com/p/rindtf/
+# 22-12-2012, @{BCwhite}v0.14@{n}
+| - Przeniesienie hostowania skryptów na http://github.com/rindek/tf
+

@@ -1,0 +1,19 @@
+F1:/dokey recallb%;/dokey newline
+F2:zatnij rybe na wedce
+F3:wyciagnij siec %; zawies rybke na wedce %; zarzuc siec %; /wl ryby %; zarzuc wedke
+F4:/op %; /wz sztylet %; dobadz sztyletu %; wytnij skore z ciala %; /wl sztylet i skory %; /db
+F5:zabij zwierze
+F6:zaslon kiryla
+F7:/idz stop
+F8:/odpalaj firefox  "http://www.arkadia.rpg.pl/"
+F9:dolacz do $(/m_dop $[tolower("XXX")])
+F10:/dodaj_odmiane
+F11:/druzyna
+F12:napij sie z fontanny
+AF6:wesprzyj
+AF8:/wrzuc
+SF4:napelnij lampe olejem z butelki
+SF5:zapal lampe
+SF6:zgas lampe
+SF12:'asd
+SAF6:powiedz dupa
