@@ -64,11 +64,19 @@
 ;    /endif
 
 /def if_array_exists = \
-    /if ($(/eval /echo %%_array_%{*}) !~ NULL) \
+    /if ($(/listvar -s _array_%{*}) !~ NULL) \
         /result 1%; \
     /else \
         /result 0%; \
     /endif
+
+/def remove_array = \
+    /if (if_array_exists({1})) \
+        /unset _array_%{1} %; \
+    /endif
+
+/def create_empty_array = \
+    /set _array_%{1}=
 
 /def add_array = \
     /if ({#} < 2) \

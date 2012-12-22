@@ -93,11 +93,39 @@
     /echo -p |           @{BCgreen}Ogolem@{n} |$[pad(_ofiary_ogolem, 4)]  | @{nBCgreen}<@{nBCyellow}<@{nBCmagenta}<@{nBCblue}<@{nBCwhite}<%; \
     /echo -p $[strcat("+", strrep("-", 18), "+")]------+ %; \
     
+/def dodaj_duzo_danych = \
+    /for i 1 10 \
+        /itrigger Daggerro zabil wielkiego krasnoluda. %; \
+    /for i 1 12 \
+        /itrigger Wielki elf zabil malego wilka. %; \
+    /for i 1 15 \
+        /itrigger Mistrz zabil smoka. %; \
+    /for i 1 17 \
+        /itrigger Kunegunda zabila niedzwiedzia. %; \
+    /for i 1 19 \
+        /itrigger Halfling zabil starego czlowieka. %; \
+    /for i 1 21 \
+        /itrigger Mieczyslaw zabil Joanne. %; \
+    /for i 1 45 \
+        /itrigger Smok zabil elfa. %; \
+    /for i 1 10 \
+        /itrigger Qwe zabil asd. %; \
+    /for i 1 12 \
+        /itrigger Asd zabil zxc. %; \
+    /for i 1 15 \
+        /itrigger Qwepok zabil qpwoek. %; \
+    /for i 1 15 \
+        /itrigger ASdzxczx zabil gnoma. %; \
+    /for i 1 15 \
+        /itrigger ASdqwes zabil zwierzoczleka. %; \
+    /for i 1 15 \
+        /itrigger Aasdasdas zabil kogostam. %; \
 
 /def tod = \
     /set linia1=$[strcat("+", strrep("-", 16), "+")]%; \
     /set linia2=| @{BCgreen}Today's kills@{n}  |%; \
-    /quote -S /sprawdzaj `/listvar -s _liczba_zgonow_* %; \
+    /remove_array killers %; \
+    /create_empty_array killers %; \
     /quote -S /makro2 `/listvar -s _liczniksesja_*_* %; \
     /quote -S /makro3 `/listvar -s _liczniksesja_*_* %; \
     /set linia1=%{linia1}----+%; \
@@ -105,7 +133,8 @@
     /eval /echo %{linia1}%; \
     /eval /echo -p %{linia2}%; \
     /eval /echo %{linia1}%; \
-    /quote -S /makro4 `/listvar -s _liczba_zgonow_* %; \
+;   /quote -S /makro4 `/listvar -s _liczba_zgonow_* %; \
+    /quote -S /show_specific_killers `/listvar -s _liczba_zgonow_* %; \
     /eval /echo %{linia1}%; \
     /set linia=| @{BCgreen}        Ogolem@{n} | %; \
     /quote -S /makro6 `/listvar -s _ile_fragow_* %; \
@@ -118,6 +147,9 @@
     /unset __temp2%; \
     /unset _ile_s
 
+/def create_killers_array = \
+
+
 /def makro2 = \
     /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1}) %; \
     /let __nazwa2=%{__temp2}                    %; \
@@ -125,6 +157,7 @@
     /set __temp2=%{P1}                          %; \
     /if ({__nazwa} !~ {__nazwa2}) \
         /set linia2=%{linia2}@{Cbgblue,BCwhite}%{__nazwa}@{n}|%; \
+        /add_index killers %__nazwa %; \
     /endif
 
 /def makro3 = \
@@ -138,6 +171,7 @@
     /endif
 
 /def sprawdzaj = \
+    /return %;\
     /test regmatch("_liczba_zgonow_([^_]*)",{1}) %;\
         /set _kogo_do_sprawdzenia=%{P1}%; \
         /quote -S /sprawdzaj2 `/listvar -s _liczniksesja_*_*
@@ -166,6 +200,37 @@
         /quote -S /makro5 `/listvar -s _liczniksesja_*_*%; \
         /set linia=%{linia}$[pad("@{BCgreen}",10,{_ile},3)]@{n} |%; \
         /echo -p %{linia}
+
+/def show_specific_killers = \
+    /test regmatch("_liczba_zgonow_([^_]*)",{1})%;\
+    /set _nazwa=%{__tmp}%; \
+    /set __tmp=%{P1}%; \
+    /let _kogo=%{P1}%; \
+    /let _ile=$(/listvar -v %{1})%; \
+    /if ({_nazwa} !~ {_kogo}) \
+        /if ({_nazwa} !~ {__tmp}) \
+            /set _nazwa=%{P1}%; \
+        /endif %; \
+        /set linia=| $[pad({_nazwa},14)] |%; \
+    /endif%; \
+    /let size $(/sizeof_array killers) %; \
+    /for index 1 %{size} \
+        /let killer_name $$(/check_index killers %%{index}) %%; \
+        /let umc=$$(/listvar -s _liczniksesja_%%{killer_name}_%{_kogo}) %%; \
+        /if (umc =~ NULL) \
+            /set _liczniksesja_%%{killer_name}_%{_kogo}=-%%; \
+        /endif %%; \
+        /let _value=$$(/listvar -v _liczniksesja_%%{killer_name}_%{_kogo}) %%; \
+        /let ddlugosc=$$[strlen(killer_name)] %%; \
+        /let ddlugosc2=%%{ddlugosc} %%; \
+        /let ddlugosc=$$[{ddlugosc} / 2 + 1] %%; \
+        /let ddlugosc2=$$[{ddlugosc2} - {ddlugosc} + 1] %%; \
+        /if ({___kogo} =~ {_tmpp}) \
+            /set linia=%%{linia}$$[pad("@{BCwhite}", 10, {_value}, {ddlugosc}, "@{n}", 4, "|", {ddlugosc2})] %%; \
+        /endif %; \
+    /set linia=%{linia}$[pad("@{BCgreen}",10,{_ile},3)]@{n} |%; \
+    /echo -p %{linia}
+
 
 /def makro5 = \
     /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1})%;\
