@@ -133,7 +133,6 @@
     /eval /echo %{linia1}%; \
     /eval /echo -p %{linia2}%; \
     /eval /echo %{linia1}%; \
-;   /quote -S /makro4 `/listvar -s _liczba_zgonow_* %; \
     /quote -S /show_specific_killers `/listvar -s _liczba_zgonow_* %; \
     /eval /echo %{linia1}%; \
     /set linia=| @{BCgreen}        Ogolem@{n} | %; \
@@ -166,21 +165,6 @@
         /let dlugosc=$[strlen({__nazwa})] %; \
         /set linia1=%{linia1}$[strrep("-",{dlugosc})]+%; \
     /endif
-
-/def sprawdzaj = \
-    /return %;\
-    /test regmatch("_liczba_zgonow_([^_]*)",{1}) %;\
-        /set _kogo_do_sprawdzenia=%{P1}%; \
-        /quote -S /sprawdzaj2 `/listvar -s _liczniksesja_*_*
-
-/def sprawdzaj2 = \
-    /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1})%;\
-        /set __imionko_do_sprawdzenia=%{P1}%; \
-        /let umc=$(/listvar -s _liczniksesja_%{__imionko_do_sprawdzenia}_%{_kogo_do_sprawdzenia}) %; \
-        /if ({umc}=~NULL) \
-            /set _liczniksesja_%{__imionko_do_sprawdzenia}_%{_kogo_do_sprawdzenia}=-%; \
-        /endif
-
 
 /def makro4 = \
     /test regmatch("_liczba_zgonow_([^_]*)",{1})%;\
