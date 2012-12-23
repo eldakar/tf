@@ -48,52 +48,63 @@
 
 /def ustaw_tarcze =\
     /set    _sprzet_tarcza=%{*}     %; \
-    /pecho Tarcza ustawiona: %{_sprzet_tarcza}
+    /pecho Tarcza ustawiona: %{_sprzet_tarcza} %; \
+    /zapisz_sprzet -q
 
 
 /def ustaw_pojemnik_bron_1 = \
     /set    _sprzet_pojemnik_bron_1=%{*} %; \
-    /pecho Pojemnik na pierwsza bron ustawiony: %{_sprzet_pojemnik_bron_1}
+    /pecho Pojemnik na pierwsza bron ustawiony: %{_sprzet_pojemnik_bron_1} %; \
+    /zapisz_sprzet -q
 
 /def ustaw_pojemnik_bron_2 = \
     /set    _sprzet_pojemnik_bron_2=%{*} %; \
-    /pecho Pojemnik  na  druga  bron ustawiony: %{_sprzet_pojemnik_bron_2}
+    /pecho Pojemnik  na  druga  bron ustawiony: %{_sprzet_pojemnik_bron_2} %; \
+    /zapisz_sprzet -q
 
 /def ustaw_pojemnik_tarcza = \
     /set    _sprzet_pojemnik_tarcza=%{*} %; \
-    /pecho Pojemnik na tarcze ustawiony: %{_sprzet_pojemnik_tarcza}
+    /pecho Pojemnik na tarcze ustawiony: %{_sprzet_pojemnik_tarcza} %; \
+    /zapisz_sprzet -q
 
 
 /def ustaw_komende_wyjmowania_bron_1 = \
     /set    _sprzet_komenda_wyjmowania_bron_1=%{*} %; \
-    /pecho Komenda na wyjmowanie broni pierwszej ustawiona: %{_sprzet_komenda_wyjmowania_bron_1}
+    /pecho Komenda na wyjmowanie broni pierwszej ustawiona: %{_sprzet_komenda_wyjmowania_bron_1} %; \
+    /zapisz_sprzet -q
 
 /def ustaw_komende_wyjmowania_bron_2 = \
     /set    _sprzet_komenda_wyjmowania_bron_2=%{*} %; \
-    /pecho Komenda  na  wyjmowanie broni drugiej ustawiona: %{_sprzet_komenda_wyjmowania_bron_2}
+    /pecho Komenda  na  wyjmowanie broni drugiej ustawiona: %{_sprzet_komenda_wyjmowania_bron_2} %; \
+    /zapisz_sprzet -q
 
 
 /def ustaw_komende_wkladania_bron_1 = \
     /set    _sprzet_komenda_wkladania_bron_1=%{*} %; \
-    /pecho Komenda na wkladanie broni pierwszej ustawiona: %{_sprzet_komenda_wkladania_bron_1}
+    /pecho Komenda na wkladanie broni pierwszej ustawiona: %{_sprzet_komenda_wkladania_bron_1} %; \
+    /zapisz_sprzet -q
 
 /def ustaw_komende_wkladania_bron_2 = \
     /set    _sprzet_komenda_wkladania_bron_2=%{*} %; \
-    /pecho Komenda  na  wkladanie broni drugiej ustawiona: %{_sprzet_komenda_wkladania_bron_2}
+    /pecho Komenda  na  wkladanie broni drugiej ustawiona: %{_sprzet_komenda_wkladania_bron_2} %; \
+    /zapisz_sprzet -q
 
 
 /def ustaw_miejscowke_pojemnik_bron_1 = \
     /set    _sprzet_miejscowka_pojemnik_bron_1=%{*} %; \
-    /pecho Miejscowka pojemnika dla broni pierwszej ustawiona: %{_sprzet_miejscowka_pojemnik_bron_1}
+    /pecho Miejscowka pojemnika dla broni pierwszej ustawiona: %{_sprzet_miejscowka_pojemnik_bron_1} %; \
+    /zapisz_sprzet -q
 
 /def ustaw_miejscowke_pojemnik_bron_2 = \
     /set    _sprzet_miejscowka_pojemnik_bron_2=%{*} %; \
-    /pecho Miejscowka pojemnika dla broni drugiej ustawiona: %{_sprzet_miejscowka_pojemnik_bron_2}
+    /pecho Miejscowka pojemnika dla broni drugiej ustawiona: %{_sprzet_miejscowka_pojemnik_bron_2} %; \
+    /zapisz_sprzet -q
 
 
 /def ustaw_pojemnik = \
     /set    _sprzet_pojemnik=%{*}%; \
     /pecho Pojemnik ogolny ustawiony: %{_sprzet_pojemnik}%; \
+    /zapisz_sprzet -q %; \
     /purge _sprzet_pojemnik_toggle_*%; \
     /def -F -mregexp -t'^$(/capitalize %{_sprzet_pojemnik}) juz jest otwart.' _sprzet_pojemnik_juz_otwarty = \
 	/set _sprzet_pojemnik_otwarty=1%; \
