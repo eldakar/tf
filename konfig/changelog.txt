@@ -77,4 +77,7 @@
 | - Skrypty sa udostepnione tu: http://code.google.com/p/rindtf/
 # 22-12-2012, @{BCwhite}v0.14@{n}
 | - Przeniesienie hostowania skryptów na http://github.com/rindek/tf
-
+| - @{BCgreen}sesja.tf@{n} - duzo szybsze generowanie tabelki /tod
+# 23-12-2012
+| - Dodanie automatycznego tworzenia katalogu gracza przy logowaniu (konfig/mortal/@{BCwhite}imiegracza@{n}/)
+| - Dodanie automatycznego zapisywania sie sprzetu gracza wewnatrz konfig/mortal/@{BCwhite}imiegracza@{n}/sprzet_@{BCwhite}imiegracza@{n}.db
