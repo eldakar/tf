@@ -78,7 +78,16 @@
 /def clear = \
     /repeat -0 $[winlines()] /echo
 
+/def shh = \
+    /echo
 
+/def file_exists = \
+  /let _filename=%{*} %; \
+  /if (tfopen(_filename, "r") == -1) \
+    /result 0 %; \
+  /else \
+    /result 1 %; \
+  /endif
 
 /def kate = \
  /if ({*} =~ NULL) \

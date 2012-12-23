@@ -28,8 +28,9 @@
 /def ustaw_gracza = \
     /mesg Ustawiam gracza: %{*}%; \
     /set _obecny_gracz=%{*} %; \
+    /quote -S /shh !mkdir %{TFDIR}/mortal/%{_obecny_gracz} %; \
     /if (_use_sql) \
-	/test select("select * from players where name='%{_obecny_gracz}'", "ustaw_gracza_sql") %; \
+        /test select("select * from players where name='%{_obecny_gracz}'", "ustaw_gracza_sql") %; \
     /endif
     
 ;; ustawia jego globalne id

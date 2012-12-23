@@ -37,11 +37,13 @@
 
 /def ustaw_bron_1 = \
     /set    _sprzet_bron_1=%{*}     %; \
-    /pecho Bron pierwsza ustawiona: %{_sprzet_bron_1}
+    /pecho Bron pierwsza ustawiona: %{_sprzet_bron_1} %; \
+    /zapisz_sprzet -q
 
 /def ustaw_bron_2 = \
     /set    _sprzet_bron_2=%{*}     %; \
-    /pecho Bron   druga  ustawiona: %{_sprzet_bron_2}
+    /pecho Bron   druga  ustawiona: %{_sprzet_bron_2} %; \
+    /zapisz_sprzet -q
 
 
 /def ustaw_tarcze =\
@@ -254,3 +256,38 @@
 
 /def up    = /ustaw_pojemnik %{*}
 /def upt   = /ustaw_pojemnik_tarcza %{*}
+
+;;; player-specific stuff
+/def query_sprzet_db_file = \
+    /echo %{TFDIR}/mortal/%{_obecny_gracz}/sprzet_%{_obecny_gracz}.db
+
+/def zaladuj_sprzet = \
+    /load -q $(/query_sprzet_db_file)
+
+/def zapisz_sprzet = \
+    /if (!getopts("q", "")) \
+        /return 0%; \
+    /endif %; \
+    /let _player_sprzet_db $(/query_sprzet_db_file) %; \
+    /echo ;; Plik z danymi sprzetu, utworzony automatycznie, nie zmieniac! %| /writefile %{_player_sprzet_db} %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_bron_1 $(/query_bron_1)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_bron_2 $(/query_bron_2)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_pojemnik_bron_1 $(/query_pojemnik_bron_1)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_pojemnik_bron_2 $(/query_pojemnik_bron_2)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_komende_wkladania_bron_1 $(/query_komenda_wkladania_bron_1)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_komende_wkladania_bron_2 $(/query_komenda_wkladania_bron_2)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_komende_wyjmowania_bron_1 $(/query_komenda_wyjmowania_bron_1)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_komende_wyjmowania_bron_2 $(/query_komenda_wyjmowania_bron_2)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_miejscowke_pojemnik_bron_1 $(/query_miejscowka_pojemnika_bron_1)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_miejscowke_pojemnik_bron_2 $(/query_miejscowka_pojemnika_bron_2)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_pojemnik $(/query_pojemnik)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_tarcze $(/query_tarcza)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_pojemnik_tarcza $(/query_pojemnik_tarcza)") %; \
+    /if (!opt_q) /mesg Dane zostaly zapisane do pliku %{_player_sprzet_db} %; /endif
+
+;; Tworzymy hook, ktory przy 'zakanczaniu' lub blizej niesprecyzowanej sytuacji disconnectu zapisze aktualny sprzet
+/def -F -wArka -h'DISCONNECT'  _arka_disc_zapisz_sprzet = \
+    /mesg -i Zostales rozlaczony z MUD'em, zapisuje aktualny sprzet. %; \
+    /zapisz_sprzet
+
+;; ladownaie sprzetu wewnatrz pliku start_arka.tf

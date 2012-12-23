@@ -10,9 +10,15 @@
     /load quick_bind_sql.tf %; \
 /endif
 
-/eval /set ArkaDir=$(/pwd)/mortal/%{_obecny_gracz}/
+/eval /set ArkaDir=%{TFDIR}/mortal/%{_obecny_gracz}
 
 /eval /cd %{ArkaDir}
 
-/load start.tf
+/if (file_exists(strcat(ArkaDir, "/start.tf"))) \
+  /load start.tf %; \
+/else \
+  /eval /pecho start.tf file for player %_obecny_gracz not found in %{TFDIR}/mortal/%{_obecny_gracz}/, not loading %; \
+/endif
 
+;; ze sprzet.tf
+/zaladuj_sprzet
