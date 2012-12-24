@@ -78,6 +78,16 @@
 /def create_empty_array = \
     /set _array_%{1}=
 
+;; array each
+; syntax:
+; /array_each <array_name> /@eval <command>
+/def array_each = \
+    /let _arr=%1 %; \
+    /let _arr_size=$(/sizeof_array %_arr) %; \
+    /for index 1 %_arr_size \
+        /set _val $$(/check_index %_arr %%index) %%; \
+        %-2
+
 /def add_array = \
     /if ({#} < 2) \
         /mesg -i Musisz podac nazwe tablicy i przynajmniej jeden jej element %; \
