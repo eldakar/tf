@@ -124,10 +124,10 @@
 /def tod = \
     /set linia1=$[strcat("+", strrep("-", 16), "+")]%; \
     /set linia2=| @{BCgreen}Today's kills@{n}  |%; \
+    /set summary=| @{BCgreen}        Ogolem@{n} | %; \
     /remove_array killers %; \
     /create_empty_array killers %; \
-    /quote -S /makro2 `/listvar -s _liczniksesja_*_* %; \
-    /quote -S /makro3 `/listvar -s _liczniksesja_*_* %; \
+    /quote -S /create_header `/listvar -s _ile_fragow_* %; \
     /set linia1=%{linia1}----+%; \
     /set linia2=%{linia2}@{BCyellow}SUMA@{n}|%; \
     /eval /echo %{linia1}%; \
@@ -135,10 +135,8 @@
     /eval /echo %{linia1}%; \
     /quote -S /show_specific_killers `/listvar -s _liczba_zgonow_* %; \
     /eval /echo %{linia1}%; \
-    /set linia=| @{BCgreen}        Ogolem@{n} | %; \
-    /quote -S /makro6 `/listvar -s _ile_fragow_* %; \
-    /set linia=%{linia}$[pad("@{BCwhite}", 10, {_ile_s}, 3, "@{n}", 4, "|", 2)]%;\
-    /echo -p %{linia} %;\
+    /set summary=%{summary}$[pad("@{BCwhite}", 10, {_ile_s}, 3, "@{n}", 4, "|", 2)]%;\
+    /echo -p %{summary} %;\
     /eval /echo %{linia1}%; \
     /unset __tmp%; \
     /unset __tmp2%; \
@@ -146,41 +144,17 @@
     /unset __temp2%; \
     /unset _ile_s
 
-/def makro2 = \
-    /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1}) %; \
-    /let __nazwa2=%{__temp2}                    %; \
-    /let __nazwa=%{P1}                          %; \
-    /set __temp2=%{P1}                          %; \
-    /if ({__nazwa} !~ {__nazwa2}) \
-        /set linia2=%{linia2}@{Cbgblue,BCwhite}%{__nazwa}@{n}|%; \
-        /add_index killers %__nazwa %; \
-    /endif
-
-/def makro3 = \
-    /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1}) %; \
-    /let __nazwa2=%{__temp}                     %; \
-    /let __nazwa=%{P1}                          %; \
-    /set __temp=%{P1}                           %; \
-    /if ({__nazwa} !~ {__nazwa2}) \
-        /let dlugosc=$[strlen({__nazwa})] %; \
-        /set linia1=%{linia1}$[strrep("-",{dlugosc})]+%; \
-    /endif
-
-/def makro4 = \
-    /test regmatch("_liczba_zgonow_([^_]*)",{1})%;\
-        /set _nazwa=%{__tmp}%; \
-        /set __tmp=%{P1}%; \
-        /let _kogo=%{P1}%; \
-        /let _ile=$(/listvar -v %{1})%; \
-        /if ({_nazwa} !~ {_kogo}) \
-            /if ({_nazwa} !~ {__tmp}) \
-                /set _nazwa=%{P1}%; \
-            /endif %; \
-            /set linia=| $[pad({_nazwa},14)] |%; \
-        /endif%; \
-        /quote -S /makro5 `/listvar -s _liczniksesja_*_*%; \
-        /set linia=%{linia}$[pad("@{BCgreen}",10,{_ile},3)]@{n} |%; \
-        /echo -p %{linia}
+/def create_header = \
+    /test regmatch("_ile_fragow_([^_]*)", {1}) %; \
+    /let _name=%{P1} %; \
+    /set linia2=%{linia2}@{Cbgblue,BCwhite}%{_name}@{n}|%; \
+    /set linia1=%{linia1}$[strrep("-", strlen(_name))]+ %; \
+    /let _ile=$(/listvar -v %{1}) %;\
+    /set _ile_s=$[_ile_s + _ile] %; \
+    /let _dl1=$[strlen(_name) / 2 + 1] %; \
+    /let _dl2=$[strlen(_name) - (strlen(_name) / 2 + 1) + 1] %; \
+    /set summary=%{summary}$[pad("@{BCwhite}", 10, {_ile}, {_dl1}, "@{n}", 4, "|", {_dl2})] %; \
+    /add_index killers %_name
 
 /def show_specific_killers = \
     /test regmatch("_liczba_zgonow_([^_]*)",{1})%;\
@@ -205,31 +179,6 @@
         /let ddlugosc2=%%{ddlugosc} %%; \
         /let ddlugosc=$$[{ddlugosc} / 2 + 1] %%; \
         /let ddlugosc2=$$[{ddlugosc2} - {ddlugosc} + 1] %%; \
-        /if ({___kogo} =~ {_tmpp}) \
-            /set linia=%%{linia}$$[pad("@{BCwhite}", 10, {_value}, {ddlugosc}, "@{n}", 4, "|", {ddlugosc2})] %%; \
-        /endif %; \
+        /set linia=%%{linia}$$[pad("@{BCwhite}", 10, {_value}, {ddlugosc}, "@{n}", 4, "|", {ddlugosc2})] %; \
     /set linia=%{linia}$[pad("@{BCgreen}",10,{_ile},3)]@{n} |%; \
     /echo -p %{linia}
-
-/def makro5 = \
-    /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1})%;\
-        /let _tmpp=%{_nazwa}%; \
-        /let _kto=%{P1}%;\
-        /let ___kogo=%{P2}%;\
-        /let _ile=$(/listvar -v %{1}) %; \
-        /let ddlugosc=$[strlen({_kto})] %; \
-        /let ddlugosc2=%{ddlugosc}%; \
-        /let ddlugosc=$[{ddlugosc} / 2 + 1]%; \
-        /let ddlugosc2=$[{ddlugosc2} - {ddlugosc} + 1] %; \
-        /if ({___kogo} =~ {_tmpp}) \
-            /set linia=%{linia}$[pad("@{BCwhite}", 10, {_ile}, {ddlugosc}, "@{n}", 4, "|", {ddlugosc2})]%; \
-        /endif
-
-/def makro6 = \
-    /test regmatch("_ile_fragow_([^_]*)", {1}) %; \
-        /let _kto=%{P1} %; \
-        /let _ile=$(/listvar -v %{1}) %;\
-        /set _ile_s=$[_ile_s + _ile] %; \
-        /let _dl1=$[strlen(_kto) / 2 + 1] %; \
-        /let _dl2=$[strlen(_kto) - (strlen(_kto) / 2 + 1) + 1] %; \
-        /set linia=%{linia}$[pad("@{BCwhite}", 10, {_ile}, {_dl1}, "@{n}", 4, "|", {_dl2})]
