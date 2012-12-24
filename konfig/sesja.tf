@@ -194,9 +194,8 @@
         /endif %; \
         /set linia=| $[pad({_nazwa},14)] |%; \
     /endif%; \
-    /let size $(/sizeof_array killers) %; \
-    /for index 1 %{size} \
-        /let killer_name $$(/check_index killers %%{index}) %%; \
+    /array_each killers /@eval \
+        /let killer_name %%_val %%; \
         /let umc=$$(/listvar -s _liczniksesja_%%{killer_name}_%{_kogo}) %%; \
         /if (umc =~ NULL) \
             /set _liczniksesja_%%{killer_name}_%{_kogo}=-%%; \
@@ -211,7 +210,6 @@
         /endif %; \
     /set linia=%{linia}$[pad("@{BCgreen}",10,{_ile},3)]@{n} |%; \
     /echo -p %{linia}
-
 
 /def makro5 = \
     /test regmatch("_liczniksesja_([^_]*)_([^_]*)",{1})%;\
