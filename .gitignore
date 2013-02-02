@@ -1,2 +1,4 @@
 logs/*
 konfig/mortal/*/**
+konfig/tf.dump.*
+database/bindy.db
