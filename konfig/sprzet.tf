@@ -129,6 +129,33 @@
         /result 1 %; \
     /endif
 
+;=============== woreczki
+/def ustaw_woreczek_1 = \
+    /set    _sprzet_woreczek_1=%{*}     %; \
+    /pecho Pierwszy woreczek ustawiony: %{_sprzet_woreczek_1} %; \
+    /zapisz_sprzet -q
+
+/def ustaw_woreczek_2 = \
+    /set    _sprzet_woreczek_2=%{*}     %; \
+    /pecho Pierwszy woreczek ustawiony: %{_sprzet_woreczek_2} %; \
+    /zapisz_sprzet -q
+
+/def ustaw_woreczek_3 = \
+    /set    _sprzet_woreczek_3=%{*}     %; \
+    /pecho Pierwszy woreczek ustawiony: %{_sprzet_woreczek_3} %; \
+    /zapisz_sprzet -q
+
+/def ustaw_woreczek_4 = \
+    /set    _sprzet_woreczek_4=%{*}     %; \
+    /pecho Pierwszy woreczek ustawiony: %{_sprzet_woreczek_4} %; \
+    /zapisz_sprzet -q
+
+/def ustaw_woreczek_5 = \
+    /set    _sprzet_woreczek_5=%{*}     %; \
+    /pecho Pierwszy woreczek ustawiony: %{_sprzet_woreczek_5} %; \
+    /zapisz_sprzet -q
+
+
 ;=============== query :) =====================================================
 
 /def query_bron_1 = /echo %{_sprzet_bron_1}
@@ -149,19 +176,27 @@
 /def query_miejscowka_pojemnika_bron_1 = /echo %{_sprzet_miejscowka_pojemnik_bron_1}
 /def query_miejscowka_pojemnika_bron_2 = /echo %{_sprzet_miejscowka_pojemnik_bron_2}
 
-
 /def query_pojemnik = /echo %{_sprzet_pojemnik}
+
+/def query_woreczek_1 = /echo %{_sprzet_woreczek_1}
+/def query_woreczek_2 = /echo %{_sprzet_woreczek_2}
+/def query_woreczek_3 = /echo %{_sprzet_woreczek_3}
+/def query_woreczek_4 = /echo %{_sprzet_woreczek_4}
+/def query_woreczek_5 = /echo %{_sprzet_woreczek_5}
 
 ;;;;; --- ogolne query
 /def sprzet = \
     /pecho Bron 1: @{BCwhite}$(/query_bron_1)@{n} (@{BCgreen}$(/query_pojemnik_bron_1)@{n} [@{BCyellow}$(/query_komenda_wyjmowania_bron_1) / $(/query_komenda_wkladania_bron_1)@{n}]) (@{BCgreen}$(/query_miejscowka_pojemnika_bron_1)@{n})%; \
     /pecho Bron 2: @{BCwhite}$(/query_bron_2)@{n} (@{BCgreen}$(/query_pojemnik_bron_2)@{n} [@{BCyellow}$(/query_komenda_wyjmowania_bron_2) / $(/query_komenda_wkladania_bron_2)@{n}]) (@{BCgreen}$(/query_miejscowka_pojemnika_bron_2)@{n})%; \
     /pecho Tarcza: @{BCwhite}$(/query_tarcza)@{n} (@{BCgreen}$(/query_pojemnik_tarcza)@{n}) %; \
-    /pecho Plecak: @{BCwhite}$(/query_pojemnik)@{n}
+    /pecho Plecak: @{BCwhite}$(/query_pojemnik)@{n} %; \
+    /pecho Woreczek 1: @{BCwhite}$(/query_woreczek_1)@{n} %; \
+    /pecho Woreczek 2: @{BCwhite}$(/query_woreczek_2)@{n} %; \
+    /pecho Woreczek 3: @{BCwhite}$(/query_woreczek_3)@{n} %; \
+    /pecho Woreczek 4: @{BCwhite}$(/query_woreczek_4)@{n} %; \
+    /pecho Woreczek 5: @{BCwhite}$(/query_woreczek_5)@{n}
     
 ;========================= komendy do uzywania ================================
-
-
 
 ;;;            -------- dobywanie  broni ----------
 /def db1 = \
@@ -251,6 +286,66 @@
 /def opt = \
     /op1 %; /ot
 
+
+;;;            ------------ woreczki ----------
+;; przypinanie
+/def pwor1 = \
+    /send przytrocz $(/m_bie_n $(/query_woreczek_1)) do pasa
+/def pwor2 = \
+    /send przytrocz $(/m_bie_n $(/query_woreczek_2)) do pasa
+/def pwor3 = \
+    /send przytrocz $(/m_bie_n $(/query_woreczek_3)) do pasa
+/def pwor4 = \
+    /send przytrocz $(/m_bie_n $(/query_woreczek_4)) do pasa
+/def pwor5 = \
+    /send przytrocz $(/m_bie_n $(/query_woreczek_5)) do pasa
+
+/def pwor = /pwor1
+;; odpinanie
+/def owor1 = \
+    /send odtrocz $(/m_bie_n $(/query_woreczek_1))
+/def owor2 = \
+    /send odtrocz $(/m_bie_n $(/query_woreczek_2))
+/def owor3 = \
+    /send odtrocz $(/m_bie_n $(/query_woreczek_3))
+/def owor4 = \
+    /send odtrocz $(/m_bie_n $(/query_woreczek_4))
+/def owor5 = \
+    /send odtrocz $(/m_bie_n $(/query_woreczek_5))    
+
+/def owor = /owor1
+;; wkladanie czegos do woreczkow
+;; syntax: /wwl1 delione
+;; -> wloz delione do woreczka nr 1
+/def wwl1 = \
+    /send wloz %* do $(/m_dop_n $(/query_woreczek_1))
+/def wwl2 = \
+    /send wloz %* do $(/m_dop_n $(/query_woreczek_2))
+/def wwl3 = \
+    /send wloz %* do $(/m_dop_n $(/query_woreczek_3))
+/def wwl4 = \
+    /send wloz %* do $(/m_dop_n $(/query_woreczek_4))
+/def wwl5 = \
+    /send wloz %* do $(/m_dop_n $(/query_woreczek_5))
+
+/def wwl = /wwl1 %*
+
+;; wyciaganie wyciaganie
+;; syntax: /wwz1 delione
+;; -> wez delione z woreczka nr 1
+/def wwz1 = \
+    /send wez %* z $(/m_dop_n $(/query_woreczek_1))
+/def wwz2 = \
+    /send wez %* z $(/m_dop_n $(/query_woreczek_2))
+/def wwz3 = \
+    /send wez %* z $(/m_dop_n $(/query_woreczek_3))
+/def wwz4 = \
+    /send wez %* z $(/m_dop_n $(/query_woreczek_4))
+/def wwz5 = \
+    /send wez %* z $(/m_dop_n $(/query_woreczek_5))
+
+/def wwz = /wwz1 %*
+
 ;;; inne aliasy
 /def ub1 = /ustaw_bron_1 %{*}
 /def ub2 = /ustaw_bron_2 %{*}
@@ -294,6 +389,11 @@
     /test fwrite(_player_sprzet_db, "/ustaw_pojemnik $(/query_pojemnik)") %; \
     /test fwrite(_player_sprzet_db, "/ustaw_tarcze $(/query_tarcza)") %; \
     /test fwrite(_player_sprzet_db, "/ustaw_pojemnik_tarcza $(/query_pojemnik_tarcza)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_woreczek_1 $(/query_woreczek_1)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_woreczek_2 $(/query_woreczek_2)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_woreczek_3 $(/query_woreczek_3)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_woreczek_4 $(/query_woreczek_4)") %; \
+    /test fwrite(_player_sprzet_db, "/ustaw_woreczek_5 $(/query_woreczek_5)") %; \
     /if (!opt_q) /mesg Dane zostaly zapisane do pliku %{_player_sprzet_db} %; /endif
 
 ;; Tworzymy hook, ktory przy 'zakanczaniu' lub blizej niesprecyzowanej sytuacji disconnectu zapisze aktualny sprzet
