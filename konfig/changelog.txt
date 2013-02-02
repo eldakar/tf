@@ -81,3 +81,12 @@
 # 23-12-2012
 | - Dodanie automatycznego tworzenia katalogu gracza przy logowaniu (konfig/mortal/@{BCwhite}imiegracza@{n}/)
 | - Dodanie automatycznego zapisywania sie sprzetu gracza wewnatrz konfig/mortal/@{BCwhite}imiegracza@{n}/sprzet_@{BCwhite}imiegracza@{n}.db
+# 02-02-2013
+| - Dodanie obslugi woreczkow w skrypcie @{BCwhite}sprzet.tf@{n} - nowe komendy:
+| - @{BCgreen}/ustaw_woreczek_X [mianownik woreczka]@{n} (X to cyfra od 1 do 5)
+| - @{BCgreen}/pworX@{n} - przypinanie danego woreczka do pasa (X - cyfra od 1 do 5)
+| - @{BCgreen}/oworX@{n} - odpinanie danego woreczka
+| - @{BCgreen}/wwlX [ziolo biernik]@{n} - wkladanie danego ziola do konkretnego woreczka
+| - @{BCgreen}/wwzX [ziolo biernik]@{n} - wyciaganie danego ziola z konkretnego woreczka
+| - dodatkowo sa dwie komendy @{BCgreen}/wwl@{n} oraz @{BCgreen}/wwz@{n} ktore wskazuja kolejno na @{BCgreen}/wwl1@{n} oraz @{BCgreen}/wwz1@{n}
+| - Komenda @{BCgreen}/sprzet@{n} zostala zaktualizowana, aby pokazac aktywne woreczki
