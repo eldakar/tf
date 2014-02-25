@@ -15,14 +15,11 @@
     /set _opoznij_login=1
 
 /def -p21 -q -t'Aby zalogowac sie na istniejaca postac - podaj jej imie.' _login_hook_0 = \
-  /send 
-
-/def -p20 -q -h'PROMPT *Podaj swoje imie*'  _login_hook_2 = \
     /if (!_opoznij_login) \
-    /def -mregexp -n1 -h'SEND ([^ ]*)' _login_hook_3 = \
-        /send %%{P0} %%; \
-        /ustaw_gracza $$[tolower({P0})]%%;\
-	/unset _opoznij_login%;\
+        /def -mregexp -n1 -h'SEND ([^ ]*)' _login_hook_3 = \
+            /send %%{P0} %%; \
+            /ustaw_gracza $$[tolower({P0})]%%;\
+	    /unset _opoznij_login%;\
     /endif
 
 /def ustaw_gracza = \
@@ -32,7 +29,7 @@
     /if (_use_sql) \
         /test select("select * from players where name='%{_obecny_gracz}'", "ustaw_gracza_sql") %; \
     /endif
-    
+
 ;; ustawia jego globalne id
 /def ustaw_gracza_sql = \
     /set _obecny_gracz_id=%{id} %;\
