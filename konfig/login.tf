@@ -19,7 +19,7 @@
         /def -mregexp -n1 -h'SEND ([^ ]*)' _login_hook_3 = \
             /send %%{P0} %%; \
             /ustaw_gracza $$[tolower({P0})]%%;\
-	    /unset _opoznij_login%;\
+        /unset _opoznij_login%;\
     /endif
 
 /def ustaw_gracza = \
